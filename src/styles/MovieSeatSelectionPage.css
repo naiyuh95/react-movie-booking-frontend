@@ -1,0 +1,60 @@
+.screen-box {
+    border: 1px solid;
+    display: flex;
+}
+.seatType {
+    width: '64%';
+}
+.seatPrice {
+    width: '12%';
+}
+.seatQty {
+    width: '12%';
+}
+.seatTotal {
+    width: '12%';
+}
+.seatTableTitle {
+    color: 'yellow';
+}
+
+.page {
+    margin-top: 0;
+    margin-right: auto;
+    margin-bottom: 0;
+    margin-left: auto;
+}
+
+.dropdown {
+    width: 90%;
+}
+
+.table {
+    width: 90%;
+}
+
+.flex-container {
+    flex: 1;
+}
+.main-container {
+    justify-content: center;
+}
+
+.legend-box {
+    display: flex;
+}
+
+.legend-seat {
+    font-size: 24px;
+}
+
+.row-index {
+    width: 60%;
+}
+
+.screen-container {
+    display: flex;
+    flex-direction: row;
+    flex-grow: 1;
+    width: 100%;
+}
