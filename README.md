@@ -1,13 +1,51 @@
-### Frontend code submitted for HACK-IT
-
-Start the application
-### `npm start`
-
-Once build on local,open localhost:3000/home to view it in the browser.
+# Frontend code submitted for HACK-IT (README is the same for both)
 
 
-### `npm test`
+This submission uses the pessimistic approach of locking rows via serializable to ensure first in first out. Users would first choose the movie before selecting the seats. When selected, users will be brought to the confirmation page where they fill in their information. When the seats are selected, the seats will be blocked for 10 minutes, unless the user confirms the booking. The blocked seats will be released via batch job running every 10 minutes. Finally, upon filling up the information and pressing confirm, user will then complete the booking of seats and an email would also be fired to the user.
 
-Launches the test runner in the interactive watch mode.\
+
+
+
+Hosted on https://hackit-submission-frontend-ny.herokuapp.com/home
+
+
+# Installation Instructions(for local) - in order 
+
+
+Set up database
+---
+
+To create local database for connection: https://dev.mysql.com/doc/workbench/en/wb-getting-started-tutorial-create-connection.html 
+Create with username `root` and password `password` with port `3306`
+
+Run the SQL script (Script.sql)
+
+
+BackEnd
+---
+
+Backend uses Java 11
+Link is at https://github.com/naiyuh95/spring-boot-movie-booking-backend
+
+### install 
+`mvn clean install`
+
+### Run 
+`mvn spring-boot:run`
+
+
+Frontend
+---
+
+Link is at https://github.com/naiyuh95/react-movie-booking-frontend
+
+### install 
+`npm install`
+
+### Run 
+`npm start` - open localhost:3000/home to view it in the browser.()
+
+
+
 
 
