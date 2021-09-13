@@ -5,7 +5,7 @@ This submission uses the pessimistic approach of locking rows via serializable t
 
 ### Documents
 App-flow.docx contains more information about the app flow(with screenshots) as well as the assumptions made.
-Test-plan contains the test cases for end to end testing.
+Test-Scripts.xlsx contains the test cases for end to end testing.
 
 
 Hosted on https://hackit-submission-frontend-ny.herokuapp.com/home
