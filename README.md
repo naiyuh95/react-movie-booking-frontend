@@ -3,7 +3,9 @@
 
 This submission uses the pessimistic approach of locking rows via serializable to ensure first in first out. Users would first choose the movie before selecting the seats. When selected, users will be brought to the confirmation page where they fill in their information. When the seats are selected, the seats will be blocked for 10 minutes, unless the user confirms the booking. The blocked seats will be released via batch job running every 10 minutes. Finally, upon filling up the information and pressing confirm, user will then complete the booking of seats and an email would also be fired to the user.
 
-
+### Documents
+App-flow.docx contains more information about the app flow(with screenshots) as well as the assumptions made.
+Test-plan contains the test cases for end to end testing.
 
 
 Hosted on https://hackit-submission-frontend-ny.herokuapp.com/home
