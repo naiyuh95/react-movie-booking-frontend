@@ -45,25 +45,33 @@ function MovieMainPage() {
 
     //seatRows
     const [seatRows, setSeatRows] = useState([])
-    const column = 6
 
-    //load dropdown
 
+
+    
     useEffect(() => {
+      
         const fetchMovieList = async () => {
-            const result = await axios(
+                //load dropdown
+            if(location.state == undefined || location.state == null || location.state == ''){
+              history.push("/PageNotFound");   
+            }else{
+              const result = await axios(
                 `http://localhost:8082/booking/getAllMoviesByName/${location.state.data.name}`
-            ).then(function (result) {
-                setMovieList(result.data['List of Movies'])
-            })
+              ).then(function (result) {
+                  setMovieList(result.data['List of Movies'])
+              })
+            }
+
         }
+
         fetchMovieList()
     }, [])
 
     useEffect(() => {
         const fetchSeatsData = async () => {
             if (selectedTimeSlot !== '0') {
-                setIsLoading(false)
+                setIsLoading(true)
                 //API call
 
                 const result = await axios(
@@ -108,11 +116,12 @@ function MovieMainPage() {
                     })
 
                     setSeatsStatus(manipulatedSeats)
-                    setIsLoading(true)
+                    setIsLoading(false)
                 })
             }
         }
 
+        
         fetchSeatsData()
     }, [selectedTimeSlot])
 
@@ -170,6 +179,7 @@ function MovieMainPage() {
                         movieName:
                             movieList[getMovieIndex(selectedTimeSlot)]['name'],
                         seatsName: selectedSeatsName,
+                        movieLink: movieList[getMovieIndex(selectedTimeSlot)]['poster link'],
                     },
                 })
             })
@@ -234,7 +244,7 @@ function MovieMainPage() {
                     <Row>
                         <Col sm={4}>
                             <Container className="row-index">
-                                {isLoading && !isHide && (
+                                {!isLoading && !isHide && (
                                     <Row gutter={40}>
                                         {seatRows.map((num) => (
                                             <Col xl={{ span: 10 }}>
@@ -246,8 +256,9 @@ function MovieMainPage() {
                             </Container>
                         </Col>
                         <Col sm={8}>
+                            
                             <Container className="screen-box">
-                                {!isLoading && (
+                                {isLoading && (
                                     <Spinner animation="border" role="status">
                                         <span className="visually-hidden">
                                             Loading...
@@ -255,7 +266,11 @@ function MovieMainPage() {
                                     </Spinner>
                                 )}
 
-                                {isLoading && !isHide && (
+                                {!isLoading && selectedTimeSlot==='0'&&(
+                                    "No Movies Selected.."
+                                )}
+
+                                {!isLoading && !isHide && (
                                     <Row gutter={40}>
                                         {seatsStatus.map((seat) => (
                                             <Col lg={{ span: 2 }}>

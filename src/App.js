@@ -13,6 +13,7 @@ import MovieSeatSelectionPage from './components/MovieSeatSelectionPage.js'
 import MovieCustomerInfoPage from './components/MovieCustomerInfoPage.js'
 import MovieSeatConfirmationPage from './components/MovieSeatConfirmationPage.js'
 import PageNotFound from './components/PageNotFound.js'
+import PageTimeOver from './components/PageTimeOver.js'
 
 function App() {
     return (
@@ -40,6 +41,17 @@ function App() {
                         path="/seatConfirm"
                         component={MovieSeatConfirmationPage}
                     />
+                    <Route
+                        exact
+                        path="/timeout"
+                        component={PageTimeOver}
+                    />
+                    <Route
+                        exact
+                        path="/PageNotFound"
+                        component={PageNotFound}
+                    />
+                    
                     <Route exact component={PageNotFound} />
                 </Switch>
             </Router>

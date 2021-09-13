@@ -8,6 +8,7 @@ import {
 import '../styles/Header.css'
 import 'bootstrap/dist/css/bootstrap.min.css'
 import moment from 'moment'
+import axios from 'axios'
 
 function MovieCustomerInfoPage() {
     let history = useHistory()
@@ -19,24 +20,67 @@ function MovieCustomerInfoPage() {
     const [emailValid, setEmailValid] = useState(false)
     const [nameValid, setNameValid] = useState(false)
     const [contactNumberValid, setContactNumberValid] = useState(false)
-    const [timeOver, setTimeOver] = useState(false)
-    const [modal, setModal] = useState(false)
 
+
+    //state for alert if failure
+    const [failure, setFailure] = useState(false)
+    const [failureMessage, setFailureMessage] = useState("")
     const location = useLocation()
 
-    const [countDown, setCountDown] = useState(600)
+    const [countDown, setCountDown] = useState(100)
     const countDownTime = useRef(null)
 
     const DirectToNextPage = () => {
-        console.log('=====')
-        console.log(history.location.state.seats)
-        console.log(contactNumber)
-        console.log('=====')
-        history.push({
-            pathname: '/seatConfirm',
-            state: {
-                ez: 'ez',
-            },
+        axios
+        .post('http://localhost:8082/booking/confirm', {
+            seats: location.state.seatsName,
+            customer: location.state.seatsName,
+            seatNames: location.state.seatsName,
+            totalAmount: location.state.price,
+            moviePosterLink: location.state.movieLink,
+            movieName: location.state.movieName,
+        })
+        .then(function (response) {
+            history.push({
+                pathname: '/seatConfirm',
+                
+            })
+        })
+        .catch(function (error) {
+            setFailure(true)
+            console.log(error);
+            if(error.response.data.message === "Database error"){
+                setFailureMessage("Error Occured, email must be unique")
+            }else{
+                setFailureMessage("Error occured, please try again later or go back to movie page.")
+            }
+            
+        })
+    }
+
+    const Test = () => {
+        axios
+        .post('http://localhost:8082/booking/confirm', {
+            seats: [7,8],
+            customer: {
+                "customerName": "aaaaaaaa",
+                "contactNumber":91234567,
+                "email": "ny_gth@hotmail.com"
+                        },
+            seatNames: ["A1","B2"],
+            totalAmount: 50,
+            moviePosterLink: "https://backend-movie-pic.s3.ap-southeast-1.amazonaws.com/dune.jpg",
+            movieName: "Dune"
+        })
+        .catch(function (error) {
+            setFailure(true)
+            console.log(error);
+            if(error.response.data.message === "Database error"){
+                setFailureMessage("Error Occured, email must be unique")
+            }else{
+                setFailureMessage("Error occured, please try again later or go back to movie page.")
+            }
+            
         })
     }
 
@@ -47,20 +91,43 @@ function MovieCustomerInfoPage() {
 
     }
 
-    
+
 
     useEffect(() => {
         const countDownStart = () => {
-            if (countDown > 0) {
+            if(location.state === undefined || location.state === null || location.state === ''){
+              history.push("/PageNotFound");   
+            }
+            if(countDown === 0){
+                history.push({
+                    pathname: '/timeout'
+                })
+            }else{
+                
                 countDownTime.current = setInterval(() => {
                     setCountDown((countDown) => countDown - 1)
                 }, 1000)
-            } else {
-                setTimeOver(true)
             }
+
+           
+            
+
         }
         countDownStart()
     }, [])
+
+    useEffect(() => {
+        const countDownStart = () => {
+            if(countDown === 0){
+                history.push({
+                    pathname: '/timeout'
+                })
+            }
+        }
+        
+        countDownStart()
+    }, [countDown])
+
 
     const formatCountDownTimer = () => {
         const seconds = `0${countDown % 60}`.slice(-2)
@@ -69,13 +136,7 @@ function MovieCustomerInfoPage() {
         return `${minutes} : ${seconds}`
     }
 
-    const test = () => {
-        console.log('adsdsads')
-        console.log('adsdsads')
-        console.log('adsdsads')
-        console.log(location)
-        console.log(location.state.movieName)
-    }
+
     const getSeatsName = () => {
         var seatString = ''
         location.state.seatsName.map((seat) => {
@@ -96,14 +157,27 @@ function MovieCustomerInfoPage() {
                 Pressing the BACK button or refreshing the page at any time
                 during the confirm booking will invalidate your transaction.
             </Alert>
-            <h1>
-                Confirm Booking for {location.state.movieName} at{' '}
-                {convertToDate(location.state.movieTime)}
-            </h1>
-            <br />
+            <br/>
+            <br/>
+            {failure && (
+                    <Alert variant="danger">
+                        {failureMessage}
+                    </Alert>
+                )}
+            {(location.state !== undefined && location.state !== null && location.state !== '') &&
+              <h1>
+                  Confirm Booking for { location.state.movieName} at{' '}
+                  {convertToDate(location.state.movieTime)}
+              </h1>
+            }
+              <br />
+            {(location.state !== undefined && location.state !== null && location.state !== '') &&
             <h3>Seats selected: {getSeatsName()}</h3>
-            <br />
-            <h5>Total Amount: ${location.state.price}</h5>
+            }
+              <br />
+              {(location.state !== undefined && location.state !== null && location.state !== '') &&
+              <h5>Total Amount: ${location.state.price}</h5>
+              }         
             <br />
             <br />
             <Form>
@@ -149,9 +223,9 @@ function MovieCustomerInfoPage() {
                     type="submit"
                     onClick={DirectToNextPage}
                 >
-                    Submit
+                    Confirm
                 </Button>
-                <Button variant="primary" onClick={test}>
+                <Button variant="primary" onClick={Test}>
                     test
                 </Button>
             </Form>
