@@ -47,5 +47,7 @@ Link is at https://github.com/naiyuh95/react-movie-booking-frontend
 
 
 
-
-
+Known issues on deployed server
+---
+User might fail to confirm the booking. This is due to the use of gmail smtp, which requires enabling DisplayUnlockCaptcha 
+https://gmailhelp.com/unlocking-googles-gmail-captcha/
