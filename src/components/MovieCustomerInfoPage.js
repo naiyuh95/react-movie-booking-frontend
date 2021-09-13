@@ -38,7 +38,7 @@ function MovieCustomerInfoPage() {
 
         if(emailValid === true && contactNumberValid===true){
             axios
-            .post('http://localhost:8082/booking/confirm', {
+            .post('https://hack-it-submission-backend-ny.herokuapp.com:8082/booking/confirm', {
                 seats: location.state.seats,
                 customer: {
                     "customerName": name,
@@ -70,7 +70,7 @@ function MovieCustomerInfoPage() {
 
     const Test = () => {
         axios
-        .post('http://localhost:8082/booking/confirm', {
+        .post('https://hack-it-submission-backend-ny.herokuapp.com:8082/booking/confirm', {
             seats: [7,8],
             customer: {
                 "customerName": "aaaaaaaa",

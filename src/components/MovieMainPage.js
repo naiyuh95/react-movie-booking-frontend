@@ -16,7 +16,7 @@ function MovieMainPage() {
         const getMovieList = async () => {
             //API call
             const result = await axios(
-                'http://localhost:8082/booking/getAllMovies'
+                'https://hack-it-submission-backend-ny.herokuapp.com:8082/booking/getAllMovies'
             ).then(function (result) {
                 var movieList = []
                 var resultListTmp = result.data['List of Movies']
