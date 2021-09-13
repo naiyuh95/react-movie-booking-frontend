@@ -1,4 +1,4 @@
-Frontend code submitted for HACK-IT
+### Frontend code submitted for HACK-IT
 
 Start the application
 ### `npm start`
