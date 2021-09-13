@@ -58,7 +58,7 @@ function MovieMainPage() {
               history.push("/PageNotFound");   
             }else{
               const result = await axios(
-                `https://hack-it-submission-backend-ny.herokuapp.com:8082/booking/getAllMoviesByName/${location.state.data.name}`
+                `https://hack-it-submission-backend-ny.herokuapp.com/booking/getAllMoviesByName/${location.state.data.name}`
               ).then(function (result) {
                   setMovieList(result.data['List of Movies'])
               })
@@ -76,7 +76,7 @@ function MovieMainPage() {
                 //API call
 
                 const result = await axios(
-                    `https://hack-it-submission-backend-ny.herokuapp.com:8082/booking/getSeatsByMovieId/${parseInt(
+                    `https://hack-it-submission-backend-ny.herokuapp.com/booking/getSeatsByMovieId/${parseInt(
                         selectedTimeSlot
                     )}`
                 ).then(function (result) {
@@ -170,7 +170,7 @@ function MovieMainPage() {
     //for booking
     const reserveAndBlockSeats = () => {
         axios
-            .post('https://hack-it-submission-backend-ny.herokuapp.com:8082/booking/reserveSeat', {
+            .post('https://hack-it-submission-backend-ny.herokuapp.com/booking/reserveSeat', {
                 seats: selectedSeats,
             })
             .then(function (response) {
