@@ -19,8 +19,6 @@ function MovieMainPage() {
                 'http://localhost:8082/booking/getAllMovies'
             ).then(function (result) {
                 var movieList = []
-
-                console.log(result.data['List of Movies'])
                 var resultListTmp = result.data['List of Movies']
                 resultListTmp.filter(function (movie) {
                     var i = movieList.findIndex(
@@ -44,9 +42,6 @@ function MovieMainPage() {
                     }
                     return null
                 })
-                console.log('movies')
-                console.log(movieList)
-                console.log(moment().add(1, 'M'))
 
                 setMoviesList(movieList)
             })

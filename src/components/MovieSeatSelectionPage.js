@@ -20,8 +20,7 @@ import moment from 'moment'
 function MovieMainPage() {
     let history = useHistory()
     const location = useLocation()
-    const vipTixPrice = 20
-    const normTixPrice = 10
+
     //states for checking status for each seat and storing selected seats
     const [seatsStatus, setSeatsStatus] = useState([])
     const [selectedSeats, setSelectedSeats] = useState([])
@@ -42,6 +41,8 @@ function MovieMainPage() {
     //for pricing
     const [normTixAmount, setNormTixAmount] = useState(0)
     const [vipTixAmount, setVipTixAmount] = useState(0)
+    const [normTixPrice, setNormTixPrice] = useState(0)
+    const [vipTixPrice, setVipTixPrice] = useState(0)
 
     //seatRows
     const [seatRows, setSeatRows] = useState([])
@@ -125,7 +126,7 @@ function MovieMainPage() {
         fetchSeatsData()
     }, [selectedTimeSlot])
 
-    const toggleSelection = (seatId, status, type, seatName) => {
+    const toggleSelection = (seatId, status, type, seatName,price) => {
         if (status === 'OPEN' && denyList.indexOf(seatId) !== 0) {
             setSelectedSeats((selectedSeats) => [...selectedSeats, seatId])
 
@@ -137,6 +138,9 @@ function MovieMainPage() {
             type === 'N'
                 ? setNormTixAmount(normTixAmount + 1)
                 : setVipTixAmount(vipTixAmount + 1)
+            type === 'N'
+                ? setNormTixPrice(normTixPrice + price)
+                : setVipTixPrice(vipTixPrice + price)
         } else if (status === 'SELECTED') {
             setSelectedSeats((selectedSeats) =>
                 [...selectedSeats].filter((item) => item != seatId)
@@ -147,6 +151,9 @@ function MovieMainPage() {
             type === 'N'
                 ? setNormTixAmount(normTixAmount - 1)
                 : setVipTixAmount(vipTixAmount - 1)
+            type === 'N'
+                ? setNormTixPrice(normTixPrice - price)
+                : setVipTixPrice(vipTixPrice - price)
         }
     }
 
@@ -188,15 +195,11 @@ function MovieMainPage() {
             })
     }
 
-    const checkStatuses = () => {
-        console.log(movieList[getMovieIndex(selectedTimeSlot)]['start time'])
-    }
 
     const getMovieIndex = () => {
         var index = 0
         movieList.map((movie, idx) => {
             if (movie['Movie ID No.'] === parseInt(selectedTimeSlot)) {
-                console.log(idx)
                 index = idx
             }
         })
@@ -279,6 +282,7 @@ function MovieMainPage() {
                                                     value={seat['Seat ID No.']}
                                                     name={seat['Seat Name']}
                                                     type={seat['Seat Type']}
+                                                    price={seat['Seat price']}
                                                     status={checkStatus(
                                                         seat['Seat ID No.']
                                                     )}
@@ -351,7 +355,6 @@ function MovieMainPage() {
                         <tr className="seatTableTitle">
                             <th className="seatType">Seat Type</th>
                             <th className="seatPrice">Ticket Price</th>
-                            <th className="seatQty">Qty</th>
                             <th className="seatTotal">Total</th>
                         </tr>
                     </thead>
@@ -360,7 +363,6 @@ function MovieMainPage() {
                             <tr>
                                 <td>VIP</td>
                                 <td>${vipTixPrice}</td>
-                                <td>{vipTixAmount}</td>
                                 <td>${vipTixAmount * vipTixPrice}</td>
                             </tr>
                         )}
@@ -368,12 +370,11 @@ function MovieMainPage() {
                             <tr>
                                 <td>Normal</td>
                                 <td>${normTixPrice}</td>
-                                <td>{normTixAmount}</td>
                                 <td>${normTixAmount * normTixPrice}</td>
                             </tr>
                         )}
                         <tr>
-                            <td colSpan="3">Total Amount To Pay</td>
+                            <td colSpan="2">Total Amount To Pay</td>
                             <td>
                                 $
                                 {vipTixAmount * vipTixPrice +
@@ -389,7 +390,6 @@ function MovieMainPage() {
                 ) : (
                     'Please select a seat'
                 )}
-                <Button onClick={checkStatuses}>test </Button>
             </Container>
         </div>
     )

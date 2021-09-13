@@ -17,9 +17,8 @@ function MovieCustomerInfoPage() {
     const [email, setEmail] = useState('')
     const [contactNumber, setContactNumber] = useState('')
 
-    const [emailValid, setEmailValid] = useState(false)
-    const [nameValid, setNameValid] = useState(false)
-    const [contactNumberValid, setContactNumberValid] = useState(false)
+    const [emailValid, setEmailValid] = useState(true)
+    const [contactNumberValid, setContactNumberValid] = useState(true)
 
 
     //state for alert if failure
@@ -27,35 +26,46 @@ function MovieCustomerInfoPage() {
     const [failureMessage, setFailureMessage] = useState("")
     const location = useLocation()
 
-    const [countDown, setCountDown] = useState(100)
+    const [countDown, setCountDown] = useState(600)
     const countDownTime = useRef(null)
 
+    const RedirectWhenRefresh = () => {
+        history.push("/home");
+      };
+
     const DirectToNextPage = () => {
-        axios
-        .post('http://localhost:8082/booking/confirm', {
-            seats: location.state.seatsName,
-            customer: location.state.seatsName,
-            seatNames: location.state.seatsName,
-            totalAmount: location.state.price,
-            moviePosterLink: location.state.movieLink,
-            movieName: location.state.movieName,
-        })
-        .then(function (response) {
-            history.push({
-                pathname: '/seatConfirm',
+
+
+        if(emailValid === true && contactNumberValid===true){
+            axios
+            .post('http://localhost:8082/booking/confirm', {
+                seats: location.state.seats,
+                customer: {
+                    "customerName": name,
+                    "contactNumber":contactNumber,
+                    "email": email
+                            },
+                seatNames: location.state.seatsName,
+                totalAmount: location.state.price,
+                moviePosterLink: location.state.movieLink,
+                movieName: location.state.movieName,
+            })
+            .then(function (response) {
+                history.push({
+                    pathname: '/seatConfirm',
+                    
+                })
+            })
+            .catch(function (error) {
+                setFailure(true)
+                if(error.response.data.message === "Database error"){
+                    setFailureMessage("Error Occured, email must be unique")
+                }else{
+                    setFailureMessage("Error occured, please try again later or go back to movie page.")
+                }
                 
             })
-        })
-        .catch(function (error) {
-            setFailure(true)
-            console.log(error);
-            if(error.response.data.message === "Database error"){
-                setFailureMessage("Error Occured, email must be unique")
-            }else{
-                setFailureMessage("Error occured, please try again later or go back to movie page.")
-            }
-            
-        })
+        }
     }
 
     const Test = () => {
@@ -74,7 +84,6 @@ function MovieCustomerInfoPage() {
         })
         .catch(function (error) {
             setFailure(true)
-            console.log(error);
             if(error.response.data.message === "Database error"){
                 setFailureMessage("Error Occured, email must be unique")
             }else{
@@ -90,6 +99,19 @@ function MovieCustomerInfoPage() {
       return regexp.test(email);
 
     }
+    const validateContactNumber = (contactNumber) =>{
+        
+        const regexp = /^[0-9]*$/;
+        return regexp.test(contactNumber);
+  
+    }
+    useEffect(() => {
+        window.addEventListener("beforeunload", RedirectWhenRefresh);
+        return () => {
+          window.removeEventListener("beforeunload", RedirectWhenRefresh);
+        };
+    }, []);
+
 
 
 
@@ -127,6 +149,26 @@ function MovieCustomerInfoPage() {
         
         countDownStart()
     }, [countDown])
+
+    useEffect(() => {
+        const checkEmailValidity = () => {
+
+            setEmailValid(validateEmail(email))
+
+        }
+        
+        checkEmailValidity()
+    }, [email])
+
+    useEffect(() => {
+        const checkContactNumberValidity = () => {
+
+            setContactNumberValid(validateContactNumber(contactNumber))
+
+        }
+        
+        checkContactNumberValidity()
+    }, [contactNumber])
 
 
     const formatCountDownTimer = () => {
@@ -184,6 +226,7 @@ function MovieCustomerInfoPage() {
                 <Form.Group className="mb-3" controlId="formName">
                     <Form.Label>Name</Form.Label>
                     <Form.Control
+                        required
                         type="name"
                         placeholder="Enter name"
                         value={name}
@@ -195,38 +238,46 @@ function MovieCustomerInfoPage() {
                 <Form.Group className="mb-3" controlId="formEmail">
                     <Form.Label>Email address</Form.Label>
                     <Form.Control
+                        required
                         type="email"
                         placeholder="Enter email"
                         value={email}
                         onChange={(emailValue) =>
                             setEmail(emailValue.target.value)
                         }
+                        isInvalid={!emailValid}
                     />
                     <Form.Text className="text-muted">
                         We'll never share your email with anyone else.
                     </Form.Text>
+                    <Form.Control.Feedback type='invalid'>
+                        Invalid email!
+                    </Form.Control.Feedback>
                 </Form.Group>
 
                 <Form.Group className="mb-3" controlId="formContactNumber">
                     <Form.Label>Contact Number</Form.Label>
                     <Form.Control
+                        required
                         type="Contact"
                         placeholder="Contact Number"
                         value={contactNumber}
                         onChange={(contactNumberValue) =>
                             setContactNumber(contactNumberValue.target.value)
                         }
+                        isInvalid={!contactNumberValid}
+                
                     />
+                    <Form.Control.Feedback type='invalid'>
+                        Invalid Phone Number, phone number should only contain digits!
+                    </Form.Control.Feedback>
                 </Form.Group>
+
                 <Button
                     variant="primary"
-                    type="submit"
                     onClick={DirectToNextPage}
                 >
                     Confirm
-                </Button>
-                <Button variant="primary" onClick={Test}>
-                    test
                 </Button>
             </Form>
         </div>

@@ -29,7 +29,8 @@ function Seat(props) {
                             props.value,
                             props.status,
                             props.type,
-                            props.name
+                            props.name,
+                            props.price
                         )
                     }
                     style={{ backgroundColor: 'green' }}
@@ -42,7 +43,8 @@ function Seat(props) {
                             props.value,
                             props.status,
                             props.type,
-                            props.name
+                            props.name,
+                            props.price
                         )
                     }
                     style={{ backgroundColor: 'blue' }}
@@ -55,7 +57,8 @@ function Seat(props) {
                             props.value,
                             props.status,
                             props.type,
-                            props.name
+                            props.name,
+                            props.price
                         )
                     }
                     style={{ backgroundColor: 'yellow' }}
