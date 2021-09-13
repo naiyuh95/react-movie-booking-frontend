@@ -68,30 +68,7 @@ function MovieCustomerInfoPage() {
         }
     }
 
-    const Test = () => {
-        axios
-        .post('https://hack-it-submission-backend-ny.herokuapp.com:8082/booking/confirm', {
-            seats: [7,8],
-            customer: {
-                "customerName": "aaaaaaaa",
-                "contactNumber":91234567,
-                "email": "ny_gth@hotmail.com"
-                        },
-            seatNames: ["A1","B2"],
-            totalAmount: 50,
-            moviePosterLink: "https://backend-movie-pic.s3.ap-southeast-1.amazonaws.com/dune.jpg",
-            movieName: "Dune"
-        })
-        .catch(function (error) {
-            setFailure(true)
-            if(error.response.data.message === "Database error"){
-                setFailureMessage("Error Occured, email must be unique")
-            }else{
-                setFailureMessage("Error occured, please try again later or go back to movie page.")
-            }
-            
-        })
-    }
+
 
     const validateEmail = (email) =>{
 

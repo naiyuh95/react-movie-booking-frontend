@@ -1,10 +1,8 @@
-import React, { useState, useEffect } from 'react'
+import React from 'react'
 import PropTypes from 'prop-types'
-import { Container, Col, Row, Tab, Tabs, Button } from 'react-bootstrap'
+import {  Button } from 'react-bootstrap'
 import '../styles/Seat.css'
-import { Link } from 'react-router-dom'
-import MovieCard from './MovieCard.js'
-import { Square } from 'react-bootstrap-icons'
+
 import 'bootstrap/dist/css/bootstrap.min.css'
 
 function Seat(props) {
