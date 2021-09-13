@@ -27,7 +27,7 @@ BackEnd
 Backend uses Java 11
 Link is at https://github.com/naiyuh95/spring-boot-movie-booking-backend
 
-### install 
+### Install 
 `mvn clean install`
 
 ### Run 
@@ -39,7 +39,7 @@ Frontend
 
 Link is at https://github.com/naiyuh95/react-movie-booking-frontend
 
-### install 
+### Install 
 `npm install`
 
 ### Run 
